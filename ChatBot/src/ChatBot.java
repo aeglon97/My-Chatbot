@@ -8,7 +8,7 @@ public class ChatBot {
 	static String[] terms;
 	static ArrayList<Word> words = new ArrayList<Word>();
 	
-	static String angryWords[] = {"fuck", "fucking", "hate", "mad", "angry", "stupid", "damn", "terrible", "kill", "kills", "swear", "ass", "asshole", "hell"};
+	static String angryWords[] = {"fuck", "fucking", "hate", "mad", "angry", "stupid", "damn", "terrible", "kill", "kills", "swear", "ass", "asshole", "hell", "shit"};
 	static String sadWords[] = {"sad", "depressed", "gloomy", "bad", "cry", "crying", "sinking", "tears", "hurt", "heartbroken"};
 	
 	static String angryResponses[] = {
@@ -45,7 +45,6 @@ public class ChatBot {
 		/*for (Word word: words){
 			System.out.println(word.getWord());
 		}*/
-		int numNoneWords = 0;
 		int numAngryWords = 0;
 		int numSadWords = 0;
 		
@@ -62,22 +61,34 @@ public class ChatBot {
 					words.get(i).emotion = Emotion.SAD;
 				}
 			}
-			numNoneWords++;
 			words.get(i).emotion = Emotion.NONE;
 		}
 		
+		/*for (Word word : words){
+			System.out.println(word.getWord() + " " + word.getEmotion());
+		}*/
+		
 		Emotion emotion;
-		int max = Math.max(Math.max(numAngryWords, numSadWords), numNoneWords);
-		
-		if (max == numAngryWords) {
-			return Emotion.ANGRY;
-		}
-		else if (max == numSadWords) {
-			return Emotion.SAD;
+		int max = Math.max(numAngryWords, numSadWords);
+		if (max == 0){
+			emotion = Emotion.NONE;
 		}
 		
-		return Emotion.NONE;
-	
+		else if (max == numAngryWords) {
+			//System.out.println("Max: angry - " + max);
+			emotion = Emotion.ANGRY;
+			return emotion;
+		}
+		else {
+			//System.out.println("Max: sad - " + max);
+			emotion = Emotion.SAD;
+			return emotion;
+		}
+		
+		//System.out.println("Max: none - " + max);
+		//System.out.println("User is " + emotion);
+		
+		return emotion;
 	}
 	
 	public static void respond(Emotion emotion){	
@@ -93,6 +104,8 @@ public class ChatBot {
 		default:
 			System.out.println("Today I discovered that cats have emotions too.");
 		}
+		words.clear();
+		terms = null;
 	}
 	
 	public static class Word {
@@ -111,8 +124,7 @@ public class ChatBot {
 			return this.string;
 		}
 	}
-	
-	
+		
 	static private void prompt(){
 		askUserInput();
 		Emotion userEmotion = evaluateUserInput();
