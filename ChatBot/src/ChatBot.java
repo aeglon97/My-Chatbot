@@ -80,12 +80,7 @@ public class ChatBot {
 	
 	}
 	
-	public static void respond(Emotion emotion){
-		for (Word word: words){
-			System.out.println(word.getWord() + word.getEmotion());
-		}
-		
-		
+	public static void respond(Emotion emotion){	
 		Random rand = new Random();
 		int randomNumber = rand.nextInt(2 + 1 - 0) + 0;
 		switch (emotion){
